@@ -2,9 +2,16 @@ package com.eickstaedtdjessica.workshopmongo.domain;
 
 import java.io.Serializable;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+//o document vai dizer que essa classe corresponde a uma collection do mongodb
+//usando somente o document ele vai mapear na collection o nome da classe tudo em minuculo
+@Document
 public class User implements Serializable{
 
 	private static final long serialVersionUID = 1L;
+	@Id
 	private String id;
 	private String name;
 	private String email;
