@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,4 +35,17 @@ public class UsereResource {
 		//o corpo da resposta vai trazer a lista
 		return ResponseEntity.ok().body(listDto);
 	}
+	
+	//o caminho para esse método vai ser users/numero do id
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	//o @PathVariable verifica se o id que está no método está igual ao que foi passado na url
+	public ResponseEntity<UserDTO> findById(@PathVariable String id){
+		
+		User obj = service.findById(id);
+		
+		//ok instancia o responseentity com o código de resposta http
+		//o corpo da resposta vai trazer a lista
+		return ResponseEntity.ok().body(new UserDTO(obj));
+	}
+
 }
