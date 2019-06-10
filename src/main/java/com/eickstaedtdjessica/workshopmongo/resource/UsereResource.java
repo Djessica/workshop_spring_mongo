@@ -27,37 +27,47 @@ public class UsereResource {
 
 	@Autowired
 	private UserService service;
-	
+
 	@RequestMapping(method = RequestMethod.GET)
-	//responseentity retorna resposta http
-	public ResponseEntity<List<UserDTO>> getAll(){
-		
+	// responseentity retorna resposta http
+	public ResponseEntity<List<UserDTO>> getAll() {
+
 		List<User> lista = service.findAll();
 		List<UserDTO> listDto = lista.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
-		//ok instancia o responseentity com o código de resposta http
-		//o corpo da resposta vai trazer a lista
+		// ok instancia o responseentity com o código de resposta http
+		// o corpo da resposta vai trazer a lista
 		return ResponseEntity.ok().body(listDto);
 	}
-	
-	//o caminho para esse método vai ser users/numero do id
+
+	// o caminho para esse método vai ser users/numero do id
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	//o @PathVariable verifica se o id que está no método está igual ao que foi passado na url
-	public ResponseEntity<UserDTO> findById(@PathVariable String id){
-		
+	// o @PathVariable verifica se o id que está no método está igual ao que foi
+	// passado na url
+	public ResponseEntity<UserDTO> findById(@PathVariable String id) {
+
 		User obj = service.findById(id);
-		
-		//ok instancia o responseentity com o código de resposta http
-		//o corpo da resposta vai trazer a lista
+
+		// ok instancia o responseentity com o código de resposta http
+		// o corpo da resposta vai trazer a lista
 		return ResponseEntity.ok().body(new UserDTO(obj));
 	}
 
-		@RequestMapping( method = RequestMethod.POST)
-		public ResponseEntity<Void> insert(@RequestBody UserDTO objDto){
-			
-			User obj = service.fromDTO(objDto);
-			obj = service.insert(obj);
-			
-			URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-			return ResponseEntity.created(uri).build();
-		}
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> insert(@RequestBody UserDTO objDto) {
+
+		User obj = service.fromDTO(objDto);
+		obj = service.insert(obj);
+
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<UserDTO> delete(@PathVariable String id) {
+
+		service.delete(id);
+
+		return ResponseEntity.noContent().build();
+	}
+
 }
