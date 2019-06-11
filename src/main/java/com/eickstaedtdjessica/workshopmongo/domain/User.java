@@ -1,20 +1,28 @@
 package com.eickstaedtdjessica.workshopmongo.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 //o document vai dizer que essa classe corresponde a uma collection do mongodb
 //usando somente o document ele vai mapear na collection o nome da classe tudo em minuculo
 @Document
-public class User implements Serializable{
+public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
 	private String id;
 	private String name;
 	private String email;
+	
+	//o dbref sinaliza que esse atributo referencia outra colecao do mongo
+	//o lazy = true diz que o post devem ser caregados somente se eles forem chamados
+	@DBRef(lazy = true)
+	private List<Post> post = new ArrayList<>();
 
 	public User() {
 
@@ -49,6 +57,14 @@ public class User implements Serializable{
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public List<Post> getPost() {
+		return post;
+	}
+
+	public void setPost(List<Post> post) {
+		this.post = post;
 	}
 
 	@Override
